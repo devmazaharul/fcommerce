@@ -150,7 +150,7 @@ const filteredOrders = currentOrders?.filter((order) => {
     </div>
 
     {/* Refresh Button */}
-    <Button variant="default" className="h-10 mt-2 sm:mt-0" onClick={handleRefresh}>
+    <Button variant="default" className="h-10 mt-2 sm:mt-0 cursor-pointer" onClick={handleRefresh}>
       Refresh
     </Button>
   </div>
@@ -213,13 +213,13 @@ const filteredOrders = currentOrders?.filter((order) => {
                       >
                         <DropdownMenuItem
                           onClick={() => handleAction('view', order.id!)}
-                          className="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded transition-colors"
+                          className="px-4 py-2 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 rounded transition-colors"
                         >
                           View
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleAction('delete', order.id!)}
-                          className="px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 rounded transition-colors"
+                          className="px-4 py-2 text-red-600 hover:bg-red-50 cursor-pointer hover:text-red-700 rounded transition-colors"
                         >
                           Delete
                         </DropdownMenuItem>

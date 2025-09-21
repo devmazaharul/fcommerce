@@ -119,6 +119,7 @@ export default function AddProductForm() {
               render={({ field }) => (
                 <Checkbox
                   id="discount_status"
+                  className="cursor-pointer"
                   checked={field.value}
                   onCheckedChange={(checked) => field.onChange(checked)}
                 />
@@ -145,7 +146,7 @@ export default function AddProductForm() {
 
         {/* Submit */}
         <div className="flex items-center justify-end gap-3">
-          <Button variant="ghost" type="button" onClick={() => reset()}>
+          <Button variant="ghost" type="button" className="cursor-pointer" onClick={() => reset()}>
             Reset
           </Button>
           <Button className="cursor-pointer" type="submit" disabled={isSubmitting}>
