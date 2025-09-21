@@ -3,9 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
-
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -119,9 +116,5 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-  .input {
-    @apply   p-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:border-gray-600 focus:bg-white focus:text-gray-900 transition
-
   }
 }

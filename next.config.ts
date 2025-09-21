@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",       // সব host allow করতে ** বা * ব্যবহার করা যায়
+        port: "",             // optional
+        pathname: "/**",      // optional, সব path allow
+      },
+    ],
+  },
 };
 
 export default nextConfig;
