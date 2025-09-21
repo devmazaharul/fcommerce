@@ -68,7 +68,7 @@ export default function OrdersTable() {
       if (action === 'view') {
         router.push(`/admin/orders/${orderId}`);
       }
-    } catch (error) {
+    } catch {
       toast.error('Unexpected error');
     }
   };

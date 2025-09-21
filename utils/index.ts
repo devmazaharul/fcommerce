@@ -13,7 +13,7 @@ const bkashTrxRegex = /^[A-Za-z0-9]{10,20}$/;
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!); 
 
 // Token generate
-export async function generateToken(payload: {role:string;email:string}) {
+export async function generateToken(payload: {role:string;email:string;name:string}) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()

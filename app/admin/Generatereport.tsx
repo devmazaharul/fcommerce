@@ -5,17 +5,9 @@ import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 import { StoreConfigaration } from '@/constant';
+import { Order } from '@/types';
 
 
-export type Order = {
-  name: string;
-  phone: string;
-  payment_method: string;
-  trx_id: string;
-  total: number;
-  status: 'Confirmed' | 'Pending';
-  address: string;
-};
 
 
 

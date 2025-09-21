@@ -51,7 +51,7 @@ export const useCartStore = create<CartState>()(
 
       totalPrice: () =>
         get().cart.reduce((acc, item) => {
-          const price = item.discountstatus ? item.price * (1 - item.discount / 100) : item.price;
+          const price = item.discount_status ? item.price * (1 - item.discount / 100) : item.price;
           return acc + price * item.quantity;
         }, 0),
     }),

@@ -3,7 +3,7 @@
 import { generateToken } from "@/utils"
 import { supabase } from "@/utils/supabaseClient"
 import { cookies } from "next/headers"
-
+import { verifyToken } from '@/utils'
 
 
 export const loginAdmin = async (email: string, password: string) => {
@@ -24,7 +24,8 @@ export const loginAdmin = async (email: string, password: string) => {
       const cookiesAction=await cookies();
       const payLoad={
         role:data.role,
-        email:data.email
+        email:data.email,
+        name:data.name
       }
       const token=await generateToken(payLoad)
     cookiesAction.set("token", `Bearer ${token}`, {
@@ -44,5 +45,42 @@ export const loginAdmin = async (email: string, password: string) => {
         role: data.role,
       },
     }
+ 
+}
+
+export const logout=async()=>{
+  const cookieAction=await cookies()
+  cookieAction.delete("token")
+  return {
+    success:true
+  }
+}
+
+
+
+
+export  async function authData() {
+let token=(await cookies()).get("token")?.value
+if(!token){
+  return {
+    success:false,
+    data:null
+  }
+}
+
+token=token.split(" ")[1]
+const tokenData=await verifyToken(token)
+if(!tokenData){
+   return {
+    success:false,
+    data:null
+  }
+}
+
+ return {
+    success:true,
+    data:tokenData
+  }
+
  
 }
