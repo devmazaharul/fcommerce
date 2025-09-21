@@ -52,7 +52,7 @@ export default function CheckoutPage() {
         clearCart();
         router.push("/");
       }
-    } catch (err) {
+    } catch  {
       toast.error(
         `Order failed. Please try again or contact ${StoreConfigaration.storeInfo.contactNumber}`
       );

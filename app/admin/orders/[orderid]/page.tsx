@@ -6,7 +6,7 @@ import { getSingleOrder } from '@/server/order';
 import { Order } from '@/types';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Mail, Phone } from 'lucide-react';
 import { StoreConfigaration } from '@/constant';
 
 export default function SingleOrderPage() {
@@ -14,7 +14,8 @@ export default function SingleOrderPage() {
   const router = useRouter();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
-const {name,address,contactEmail,contactNumber} =StoreConfigaration.storeInfo
+  const { name, address, contactEmail, contactNumber } =
+    StoreConfigaration.storeInfo;
   const orderId = params.orderid as string;
 
   useEffect(() => {
@@ -71,18 +72,26 @@ const {name,address,contactEmail,contactNumber} =StoreConfigaration.storeInfo
           {/* Store + Order Info */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6 border-b pb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">🛒 {name || "store"}</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                🛒 {name || 'store'}
+              </h2>
               <p className="text-sm text-gray-600">
-               {address || "Address here"}
+                {address || 'Address here'}
               </p>
-              <p className="text-sm text-gray-600">
-                📧 {contactEmail} | ☎ {contactNumber}
-              </p>
+              <div className="text-sm text-gray-600 flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <Mail size={15} /> {contactEmail}
+                </div>
+                <span className="hidden sm:inline">-</span>
+                <div className="flex items-center gap-2">
+                  <Phone size={15} /> {contactNumber}
+                </div>
+              </div>
             </div>
             <div className="text-right mt-4 md:mt-0">
               <p className="text-sm text-gray-500">Order ID: {order.id}</p>
               <p className="text-sm text-gray-500">
-                Date: {new Date(order.created_at).toLocaleDateString()}
+                Date: {new Date(order.created_at!).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -126,7 +135,9 @@ const {name,address,contactEmail,contactNumber} =StoreConfigaration.storeInfo
               <p className="text-gray-700">
                 <span className="font-semibold">Status:</span>{' '}
                 {order.status ? (
-                  <span className="text-green-600 font-semibold">Confirmed</span>
+                  <span className="text-green-600 font-semibold">
+                    Confirmed
+                  </span>
                 ) : (
                   <span className="text-red-600 font-semibold">Pending</span>
                 )}
@@ -153,7 +164,8 @@ const {name,address,contactEmail,contactNumber} =StoreConfigaration.storeInfo
 
           {/* Footer Note */}
           <div className="mt-8 text-center text-sm text-gray-500 border-t pt-4">
-            Thank you for shopping with <span className="font-semibold"> {name}</span>.
+            Thank you for shopping with{' '}
+            <span className="font-semibold"> {name}</span>.
           </div>
         </div>
       </div>

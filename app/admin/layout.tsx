@@ -1,7 +1,7 @@
 'use client';
 import "./style.css"
 import React, { ReactNode } from 'react';
-import { Home, Box, ShoppingCart, Users, Settings, ShieldUser } from 'lucide-react';
+import { Home, Box, ShoppingCart, Settings, ShieldUser } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import { Toaster } from "react-hot-toast";

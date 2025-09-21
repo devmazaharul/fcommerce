@@ -64,7 +64,7 @@ export default function ProductsPage() {
       const allProducts=await getAllProducts();
       if(!allProducts) throw new Error("Error")
       
-        let filtered = allProducts.filter((p) =>
+        const filtered = allProducts.filter((p) =>
       [p.name, p.category, p.sku].some((field) =>
         field.toLowerCase().includes(searchQuery.toLowerCase())
       )

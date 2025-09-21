@@ -3,7 +3,7 @@
 import { Product } from '@/types';
 import Image from 'next/image';
 import React from 'react';
-import { ShoppingCart, CheckCircle, Clock } from 'lucide-react';
+import { ShoppingCart} from 'lucide-react';
 import { formatPrice } from '@/utils';
 import { useCartStore } from '@/store';
 import { useRouter } from 'next/navigation';

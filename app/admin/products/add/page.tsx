@@ -45,7 +45,7 @@ export default function AddProductForm() {
       toast.success("Product has been created");
       reset();
     } catch (err) {
-      console.error(err);
+
       toast.error("Failed to create product");
     }
   };
