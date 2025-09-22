@@ -23,6 +23,7 @@ export default function AdminLoginForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -42,6 +43,12 @@ export default function AdminLoginForm() {
   } else {
     toast.error('Something went wrong');
   }
+}finally{
+  reset({
+    email:"",
+    password:""
+  })
+
 }
 
   };
