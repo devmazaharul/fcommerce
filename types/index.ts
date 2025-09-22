@@ -41,3 +41,28 @@ export interface Order {
   created_at?:Date
 
 }
+
+
+
+export type adminFields = {
+  name:string;
+  email:string;
+  phone:string;
+  address:string;
+  role:"admin";
+  created_at:Date
+}
+
+//admin
+export type ProfileFormValues = {
+  name: string;
+  address: string;
+  phone: string;
+};
+
+export type PasswordFormValues = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+

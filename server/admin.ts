@@ -6,7 +6,7 @@ import { cookies } from "next/headers"
 import { verifyToken } from '@/utils'
 
 
-export const loginAdmin = async (email: string, password: string) => {
+ const loginAdmin = async (email: string, password: string) => {
 
     const { data, error } = await supabase
       .from('admins')
@@ -48,7 +48,7 @@ export const loginAdmin = async (email: string, password: string) => {
  
 }
 
-export const logout=async()=>{
+ const logout=async()=>{
   const cookieAction=await cookies()
   cookieAction.delete("token")
   return {
@@ -59,7 +59,7 @@ export const logout=async()=>{
 
 
 
-export  async function authData() {
+  async function authData() {
 let token=(await cookies()).get("token")?.value
 if(!token){
   return {
@@ -82,10 +82,97 @@ if(!tokenData){
     data:tokenData
   }
 
- 
 }
 
 
-const updateName={
-  
+
+const getAdminInfo = async (email: string) => {
+  return supabase
+    .from("admins")
+    .select("id, name, email, role, created_at ,address , phone")
+    .eq("email", email)
+    .single();
+};
+
+
+type UpdateAdminInfo = {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+};
+
+ const updateAdminInfo = async (data: UpdateAdminInfo) => {
+  try {
+    const { error, data: updatedAdmin } = await supabase
+      .from('admins')
+      .update({
+        name: data.name,
+        address: data.address,
+        phone: data.phone,
+      })
+      .eq('email', data.email) 
+      .select("name,email,address,phone") 
+      .single()
+
+    if (error) throw error;
+
+    return { success: true, data: updatedAdmin };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};
+
+
+
+
+
+type ChangePasswordInput = {
+  email: string;          // যেই ইউজারের password change হবে
+  currentPassword: string; // আগের password
+  newPassword: string;     // নতুন password
+};
+
+ const changeAdminPassword = async (data: ChangePasswordInput) => {
+  try {
+    // ১️⃣ আগের password verify করার জন্য user fetch
+    const { data: admin, error } = await supabase
+      .from('admins')
+      .select('password')
+      .eq('email', data.email)
+      .single();
+
+    if (error) throw error;
+    if (!admin) throw new Error('Admin not found');
+    if(admin.password!==data.currentPassword) throw new Error('Invalid current password');
+
+
+    // ৪️⃣ Supabase এ update
+    const { error: updateError } = await supabase
+      .from('admins')
+      .update({ password: data.newPassword })
+      .eq('email', data.email);
+
+    if (updateError) throw updateError;
+
+    //remove cookied and redirect to re login 
+    const cookieAction=await cookies()
+    cookieAction.delete("token")
+    return { success: true, message: 'Password updated successfully!' };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};
+
+
+
+
+
+export {
+  getAdminInfo,
+  authData,
+  loginAdmin,
+  logout,
+  updateAdminInfo,
+  changeAdminPassword
 }
