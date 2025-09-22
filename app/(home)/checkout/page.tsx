@@ -41,6 +41,7 @@ export default function CheckoutPage() {
         address: data.address,
         note: data.note,
         payment_method: data.paymentMethod,
+        bkash_number:data.paymentMethod=="bkash"?data.bkashNumber:"---",
         trx_id: data.paymentMethod === "bkash" ? data.trxId! : "cod-39934548",
         product_ids: cart.map((item) => item.id),
         total: totalPrice,
@@ -86,7 +87,7 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
                 <div>
-                  <input {...register("name")} placeholder="Full Name *" className="input" />
+                  <input {...register("name")} placeholder="Full Name *" className="input capitalize" />
                   {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                 </div>
                 {/* Phone */}
@@ -112,22 +113,59 @@ export default function CheckoutPage() {
                 <CreditCard size={24} /> Payment Method
               </h2>
               <div className="flex flex-col gap-4">
-                <label className="flex gap-3">
-                  <input type="radio" value="cod" {...register("paymentMethod")} /> Cash on Delivery
+                <label className="flex gap-3 cursor-pointer">
+                  <input  type="radio" value="cod" {...register("paymentMethod")} /> Cash on Delivery
                 </label>
-                <label className="flex gap-3">
-                  <input type="radio" value="bkash" {...register("paymentMethod")} /> Bkash
+                <label className="flex gap-3 cursor-pointer">
+                  <input type="radio" value="bkash"  {...register("paymentMethod")} /> Bkash
                 </label>
 
-                {paymentMethod === "bkash" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input {...register("bkashNumber")} placeholder="Bkash Number" className="input" />
-                    {errors.bkashNumber && <p className="text-red-500 text-sm">{errors.bkashNumber.message}</p>}
+               {paymentMethod === "bkash" && (
+  <div className="space-y-4 bg-pink-50 border border-pink-200 rounded-xl p-4">
+    {/* Instruction */}
+    <div className="text-center">
+      <p className="text-base font-medium text-gray-700">
+       প্রথমে নিচের নাম্বারে সেন্ড মানি করেনঃ
+      </p>
+      <p className="text-lg font-bold text-pink-600 mt-1">
+        {StoreConfigaration.payment.bkash.acc_number}
+      </p>
+      <p className="text-sm text-gray-600 mt-1">
+        {StoreConfigaration.payment.bkash.message}
+      </p>
+    </div>
 
-                    <input {...register("trxId")} placeholder="Trx ID" className="input" />
-                    {errors.trxId && <p className="text-red-500 text-sm">{errors.trxId.message}</p>}
-                  </div>
-                )}
+    {/* Form Fields */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex flex-col">
+        <input
+          {...register("bkashNumber")}
+          placeholder="আপনার বিকাশ নাম্বার"
+          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
+        />
+        {errors.bkashNumber && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.bkashNumber.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col">
+        <input
+          {...register("trxId")}
+          placeholder="Trx ID লিখুন"
+          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
+        />
+        {errors.trxId && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.trxId.message}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
               </div>
             </div>
           </div>

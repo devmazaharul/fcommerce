@@ -1,13 +1,13 @@
 export const StoreConfigaration=Object.freeze({
   storeInfo:{
-    name:"Store",
-    authors:"Store Team",
+    name:"Infinity",
+    authors:"Infinity Team",
     address:"Dahaka, Bangladesh",
     contactEmail:"support@yourdomain.com",
     contactNumber:'01797575932',
-    title:"Store – Small Ecommerce Site",
+    title:"Infinity – Small Ecommerce Site",
     doamin:"https://yourdomain.com",
-    description:"Store is a small ecommerce site where you can explore and buy quality products at affordable prices.",
+    description:"Infinity is a small ecommerce site where you can explore and buy quality products at affordable prices.",
     startDate:new Date().toLocaleDateString(),
     avablityDatesInWakys:"sun-sat",
     locale:"en-US",
@@ -23,10 +23,14 @@ export const StoreConfigaration=Object.freeze({
     bkash:{
       acc_number:"0179757932",
       type:"personal",
-      message:"number a taka send money kore nicer box a apnar bkash number and trxId ta bosaben"
+      message:"নাম্বারে টাকা পাঠানোর পর নিচের বক্সে আপনার বিকাশ নাম্বার আর TrxID লিখে দিন। "
     }
   },
  product:{
+  cart:{
+    max_add_tocart:10,
+    min_add_tocart:1
+  },
   name: {
     min: { value: 3, message: "Name must be at least 3 characters" },
     max: { value: 70, message: "Name must be less than 50 characters" },

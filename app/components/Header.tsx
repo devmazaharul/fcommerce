@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/store';
 import { usePathname } from 'next/navigation';
+import { StoreConfigaration } from '@/constant';
 
 
 export default function Header() {
@@ -20,8 +21,8 @@ export default function Header() {
       <div className="container mx-auto px-10 py-4 flex justify-between items-center">
         
         {/* Left: Logo */}
-        <Link href="/" className="text-2xl md:text-3xl font-bold text-gray-900">
-          Store
+        <Link href="/" className="text-2xl md:text-3xl font-bold  uppercase text-gray-700">
+          {StoreConfigaration.storeInfo.name}
         </Link>
 
         {/* Right: Cart */}

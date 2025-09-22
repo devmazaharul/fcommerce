@@ -8,6 +8,7 @@ import { useCartStore } from '@/store';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { StoreConfigaration } from '@/constant';
 
 export default function CartPage() {
   const cart = useCartStore((state) => state.cart);
@@ -93,14 +94,14 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() => {
-                          if (item.quantity >= 9) {
+                          if (item.quantity >= StoreConfigaration.product.cart.max_add_tocart-1) {
                             toast.error(
                               'Maximum 10 products allowed at a time!'
                             );
                           }
                           addToCart(item, 1);
                         }}
-                        disabled={item.quantity >= 10}
+                        disabled={item.quantity >= StoreConfigaration.product.cart.max_add_tocart}
                         className="p-1 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         aria-label="Increase quantity"
                       >

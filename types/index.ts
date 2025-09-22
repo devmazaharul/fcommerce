@@ -34,6 +34,7 @@ export interface Order {
   note?: string; // optional
   total:number;
   payment_method: PaymentMethod;
+  bkash_number?: string;
   trx_id: string; // bkash হলে trx id, না হলে cod-generated id
   product_ids: string[]; // array of product UUIDs
   status?:boolean;

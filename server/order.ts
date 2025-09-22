@@ -2,7 +2,7 @@ import { Order } from '@/types';
 import { supabase } from '@/utils/supabaseClient';
 
 const getOrders = async () => {
-  const { data, error } = await supabase.from('orders').select('*');
+  const { data, error } = await supabase.from('orders').select('*').order("created_at", { ascending: false })
   if (error) {
     console.log(error);
     return;

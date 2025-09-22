@@ -9,6 +9,7 @@ import { formatPrice } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store";
 import toast from "react-hot-toast";
+import { StoreConfigaration } from "@/constant";
 
 type Props = {
   product: Product;
@@ -120,12 +121,12 @@ export default function ProductCard({ product }: Props) {
 
             <button
               onClick={() => {
-                if (findcart.quantity >= 9) {
+                if (findcart.quantity >= StoreConfigaration.product.cart.max_add_tocart-1) {
                   toast.error("Maximum 10 products allowed at a time!");
                 }
                 addToCart(findcart, 1);
               }}
-              disabled={findcart.quantity >= 10}
+              disabled={findcart.quantity >= StoreConfigaration.product.cart.max_add_tocart}
               className="px-3 py-1 bg-gray-200 text-gray-700 cursor-pointer font-bold rounded-md hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               +

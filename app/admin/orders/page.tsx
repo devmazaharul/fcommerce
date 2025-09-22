@@ -42,6 +42,7 @@ export default function OrdersTable() {
   const fetchOrders = async () => {
     setLoading(true);
     const data = await getOrders();
+    console.log(data);
     setCurrentOrders(data as Order[]);
     setLoading(false);
   };
@@ -168,6 +169,7 @@ const filteredOrders = currentOrders?.filter((order) => {
                 <TableHead className="font-bold text-gray-700">Phone</TableHead>
                 <TableHead className="font-bold text-gray-700">Address</TableHead>
                 <TableHead className="font-bold text-gray-700">Payment</TableHead>
+                <TableHead className="font-bold text-gray-700">B. Number</TableHead>
                 <TableHead className="font-bold text-gray-700">TRX ID</TableHead>
                 <TableHead className="font-bold text-gray-700">Total</TableHead>
                 <TableHead className="font-bold text-gray-700">Confirm</TableHead>
@@ -175,7 +177,7 @@ const filteredOrders = currentOrders?.filter((order) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {[...filteredOrders].reverse().map((order, idx) => (
+              {filteredOrders.map((order, idx) => (
                 <TableRow
                   key={idx}
                   className="hover:bg-gray-50 transition-colors duration-200 border-gray-200"
@@ -184,6 +186,7 @@ const filteredOrders = currentOrders?.filter((order) => {
                   <TableCell>{order.phone}</TableCell>
                   <TableCell>{order.address}</TableCell>
                   <TableCell className="capitalize">{order.payment_method}</TableCell>
+                  <TableCell className="capitalize">{order.bkash_number}</TableCell>
                   <TableCell>{order.trx_id}</TableCell>
                   <TableCell className="font-bold">{formatPrice(order.total)}</TableCell>
                   <TableCell>
