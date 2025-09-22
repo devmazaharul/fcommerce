@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from './utils'; // ধরে নিচ্ছি verifyToken একটি async ফাংশন
@@ -41,6 +42,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // matcher ব্যবহার করে middleware-এর রুট নির্দিষ্ট করা হয়েছে।
   matcher: ['/admin/:path*', '/access'],
 };

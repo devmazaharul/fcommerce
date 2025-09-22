@@ -30,7 +30,7 @@ const loginAdmin = async (email: string, password: string) => {
   cookiesAction.set('token', token, {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     maxAge: 43200, //12 hours
   });
 
