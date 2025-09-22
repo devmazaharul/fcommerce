@@ -1,5 +1,5 @@
 'use client';
-
+import {Agdasima ,Acme} from 'next/font/google';
 import React from 'react';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
@@ -7,6 +7,11 @@ import { useCartStore } from '@/store';
 import { usePathname } from 'next/navigation';
 import { StoreConfigaration } from '@/constant';
 
+const fontHeader=Acme({
+weight:"400",
+style:"normal",
+subsets:["latin"]
+})
 
 export default function Header() {
   const totalItems = useCartStore((state) => state.totalItems());
@@ -22,7 +27,9 @@ export default function Header() {
         
         {/* Left: Logo */}
         <Link href="/" className="text-2xl md:text-3xl font-bold  uppercase text-gray-700">
-          {StoreConfigaration.storeInfo.name}
+          <span className={fontHeader.className}>
+            {StoreConfigaration.storeInfo.name}
+          </span>
         </Link>
 
         {/* Right: Cart */}

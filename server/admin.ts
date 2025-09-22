@@ -1,99 +1,88 @@
-'use server'
+'use server';
 
-import { generateToken } from "@/utils"
-import { supabase } from "@/utils/supabaseClient"
-import { cookies } from "next/headers"
-import { verifyToken } from '@/utils'
+import { generateToken } from '@/utils';
+import { supabase } from '@/utils/supabaseClient';
+import { cookies } from 'next/headers';
+import { verifyToken } from '@/utils';
 
+const loginAdmin = async (email: string, password: string) => {
+  const { data, error } = await supabase
+    .from('admins')
+    .select('*')
+    .eq('email', email)
+    .single();
 
- const loginAdmin = async (email: string, password: string) => {
+  if (error) throw new Error(error.message);
 
-    const { data, error } = await supabase
-      .from('admins')
-      .select('*')
-      .eq('email', email)
-      .single()
+  if (!data) throw new Error('Admin not found');
 
-    if (error) throw new Error(error.message)
+  if (data.password !== password)
+    throw new Error('Login failed. Please check your credentials.');
 
-    if (!data) throw new Error("Admin not found")
+  // add cokie
+  const cookiesAction = await cookies();
+  const payLoad = {
+    role: data.role,
+    email: data.email,
+    name: data.name,
+  };
+  const token = await generateToken(payLoad);
+  cookiesAction.set('token', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    maxAge: 43200, //12 hours
+  });
 
-    if (data.password !== password) throw new Error("Login failed. Please check your credentials.")
+  return {
+    success: true,
+    admin: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    },
+  };
+};
 
-      // add cokie
-      const cookiesAction=await cookies();
-      const payLoad={
-        role:data.role,
-        email:data.email,
-        name:data.name
-      }
-      const token=await generateToken(payLoad)
-    cookiesAction.set("token", `Bearer ${token}`, {
-  httpOnly: true,    
-  secure: true,        
-  sameSite: "strict", 
-  path: "/",           
-  maxAge: 60 * 60 * 24 
-});
+const logout = async () => {
+  const cookieAction = await cookies();
+  cookieAction.delete('token');
+  return {
+    success: true,
+  };
+};
 
+async function authData() {
+  const token = (await cookies()).get('token')?.value;
+  if (!token) {
     return {
-      success: true,
-      admin: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        role: data.role,
-      },
-    }
- 
-}
+      success: false,
+      data: null,
+    };
+  }
 
- const logout=async()=>{
-  const cookieAction=await cookies()
-  cookieAction.delete("token")
+  const tokenData = await verifyToken(token);
+  if (!tokenData) {
+    return {
+      success: false,
+      data: null,
+    };
+  }
+
   return {
-    success:true
-  }
+    success: true,
+    data: tokenData,
+  };
 }
-
-
-
-
-  async function authData() {
-let token=(await cookies()).get("token")?.value
-if(!token){
-  return {
-    success:false,
-    data:null
-  }
-}
-
-token=token.split(" ")[1]
-const tokenData=await verifyToken(token)
-if(!tokenData){
-   return {
-    success:false,
-    data:null
-  }
-}
-
- return {
-    success:true,
-    data:tokenData
-  }
-
-}
-
-
 
 const getAdminInfo = async (email: string) => {
   return supabase
-    .from("admins")
-    .select("id, name, email, role, created_at ,address , phone")
-    .eq("email", email)
+    .from('admins')
+    .select('id, name, email, role, created_at ,address , phone')
+    .eq('email', email)
     .single();
 };
-
 
 type UpdateAdminInfo = {
   name: string;
@@ -102,7 +91,7 @@ type UpdateAdminInfo = {
   email: string;
 };
 
- const updateAdminInfo = async (data: UpdateAdminInfo) => {
+const updateAdminInfo = async (data: UpdateAdminInfo) => {
   try {
     const { error, data: updatedAdmin } = await supabase
       .from('admins')
@@ -111,9 +100,9 @@ type UpdateAdminInfo = {
         address: data.address,
         phone: data.phone,
       })
-      .eq('email', data.email) 
-      .select("name,email,address,phone") 
-      .single()
+      .eq('email', data.email)
+      .select('name,email,address,phone')
+      .single();
 
     if (error) throw error;
 
@@ -123,19 +112,15 @@ type UpdateAdminInfo = {
   }
 };
 
-
-
-
-
 type ChangePasswordInput = {
-  email: string;          // যেই ইউজারের password change হবে
-  currentPassword: string; // আগের password
-  newPassword: string;     // নতুন password
+  email: string; 
+  currentPassword: string; 
+  newPassword: string; 
 };
 
- const changeAdminPassword = async (data: ChangePasswordInput) => {
+const changeAdminPassword = async (data: ChangePasswordInput) => {
   try {
-    // ১️⃣ আগের password verify করার জন্য user fetch
+
     const { data: admin, error } = await supabase
       .from('admins')
       .select('password')
@@ -144,8 +129,8 @@ type ChangePasswordInput = {
 
     if (error) throw error;
     if (!admin) throw new Error('Admin not found');
-    if(admin.password!==data.currentPassword) throw new Error('Invalid current password');
-
+    if (admin.password !== data.currentPassword)
+      throw new Error('Invalid current password');
 
     // ৪️⃣ Supabase এ update
     const { error: updateError } = await supabase
@@ -155,18 +140,14 @@ type ChangePasswordInput = {
 
     if (updateError) throw updateError;
 
-    //remove cookied and redirect to re login 
-    const cookieAction=await cookies()
-    cookieAction.delete("token")
+    //remove cookied and redirect to re login
+    const cookieAction = await cookies();
+    cookieAction.delete('token');
     return { success: true, message: 'Password updated successfully!' };
   } catch (error: any) {
     return { success: false, message: error.message };
   }
 };
-
-
-
-
 
 export {
   getAdminInfo,
@@ -174,5 +155,5 @@ export {
   loginAdmin,
   logout,
   updateAdminInfo,
-  changeAdminPassword
-}
+  changeAdminPassword,
+};

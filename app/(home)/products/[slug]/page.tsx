@@ -7,6 +7,8 @@ type PageProps = {
   params: { slug: string };
 };
 
+
+
 // Async function to generate metadata dynamically
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } =await params;
@@ -59,7 +61,7 @@ export default async function Page({ params }: {params:Promise<{slug:string}>}) 
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" mx-auto  py-8">
       <Productdetails product={findProduct} />
     </div>
   );

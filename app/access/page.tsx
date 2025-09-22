@@ -55,7 +55,7 @@ export default function AdminLoginForm() {
 
   return (
     <div className="flex items-center justify-center min-h-screen  p-6">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-gray-100 shadow-gray-200">
+      <div className="w-full max-w-md  p-8 ">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             Admin Login
@@ -75,7 +75,7 @@ export default function AdminLoginForm() {
                 type="email"
                 placeholder="you@example.com"
                 {...register('email')}
-                className="pl-10 w-full py-4"
+                className="pl-10 w-full py-6"
               />
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             </div>
@@ -91,9 +91,9 @@ export default function AdminLoginForm() {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="password"
                 {...register('password')}
-                className="pl-10 w-full py-4"
+                className="pl-10 w-full py-6"
               />
               <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             </div>
@@ -105,7 +105,7 @@ export default function AdminLoginForm() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full cursor-pointer py-5"
+            className="w-full cursor-pointer py-6 font-semibold"
             disabled={isSubmitting}
           >
             <LogIn size={20} />

@@ -64,6 +64,15 @@ export const StoreConfigaration=Object.freeze({
     max: { value: 255, message: "Image URL must be less than 255 characters" },
     message: "Image must be a valid URL",
   },
+},
+components:{
+  btn_bg:"bg-gray-700",
+  btn_details_bg:"bg-gray-700",
+  btn_details_bg_hover:"bg-blue-700",
+  btn_details_text:"text-white",
+  btn_bg_hover:"bg-gray-600",
+  text_color:'text-white',
+  price_text_color:'text-gray-700',
 }
 
 })

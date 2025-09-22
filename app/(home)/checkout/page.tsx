@@ -2,7 +2,7 @@
 import React from 'react';
 import { useCartStore } from '@/store';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, MapPin,  CreditCard, Package } from 'lucide-react';
+import { ShoppingCart, MapPin, CreditCard, Package } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { createOrder } from '@/server/order';
 import { StoreConfigaration } from '@/constant';
@@ -11,7 +11,6 @@ import { formatPrice } from '@/utils';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckoutFormType, checkoutSchema } from '@/utils/order';
-
 
 export default function CheckoutPage() {
   const cart = useCartStore((state) => state.cart);
@@ -27,11 +26,11 @@ export default function CheckoutPage() {
   } = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      paymentMethod: "cod",
+      paymentMethod: 'cod',
     },
   });
 
-  const paymentMethod = watch("paymentMethod");
+  const paymentMethod = watch('paymentMethod');
 
   const onSubmit = async (data: CheckoutFormType) => {
     try {
@@ -41,19 +40,19 @@ export default function CheckoutPage() {
         address: data.address,
         note: data.note,
         payment_method: data.paymentMethod,
-        bkash_number:data.paymentMethod=="bkash"?data.bkashNumber:"---",
-        trx_id: data.paymentMethod === "bkash" ? data.trxId! : "cod-39934548",
+        bkash_number: data.paymentMethod == 'bkash' ? data.bkashNumber : '',
+        trx_id: data.paymentMethod === 'bkash' ? data.trxId! : 'cod-39934548',
         product_ids: cart.map((item) => item.id),
         total: totalPrice,
       };
 
       const pushToDb = await createOrder(makeOrderObj);
       if (pushToDb.status === 200) {
-        toast.success("Order placed successfully!");
+        toast.success('Order placed successfully!');
         clearCart();
-        router.push("/");
+        router.push('/');
       }
-    } catch  {
+    } catch {
       toast.error(
         `Order failed. Please try again or contact ${StoreConfigaration.storeInfo.contactNumber}`
       );
@@ -76,7 +75,10 @@ export default function CheckoutPage() {
           Secure Checkout
         </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12"
+        >
           {/* Left Form */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             {/* Shipping Info */}
@@ -87,85 +89,122 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
                 <div>
-                  <input {...register("name")} placeholder="Full Name *" className="input capitalize" />
-                  {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                  <input
+                    {...register('name')}
+                    placeholder="Full Name *"
+                    className="input capitalize"
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 {/* Phone */}
                 <div>
-                  <input {...register("phone")} placeholder="Phone Number *" className="input" />
-                  {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                  <input
+                    {...register('phone')}
+                    placeholder="Phone Number *"
+                    className="input"
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
                 {/* Address */}
                 <div className="md:col-span-2">
-                  <textarea {...register("address")} placeholder="Full Address *" className="input h-24" />
-                  {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+                  <textarea
+                    {...register('address')}
+                    placeholder="Full Address *"
+                    className="input h-24"
+                  />
+                  {errors.address && (
+                    <p className="text-red-500 text-sm">
+                      {errors.address.message}
+                    </p>
+                  )}
                 </div>
                 {/* Note */}
                 <div className="md:col-span-2">
-                  <textarea {...register("note")} placeholder="Note (Optional)" className="input h-16" />
+                  <textarea
+                    {...register('note')}
+                    placeholder="Note (Optional)"
+                    className="input h-16"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Payment */}
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-2xl shadow-gray-100 border border-gray-100">
+            <div className="bg-white p-5 md:p-8 rounded-xl shadow-2xl shadow-gray-100 border border-gray-100">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <CreditCard size={24} /> Payment Method
               </h2>
               <div className="flex flex-col gap-4">
                 <label className="flex gap-3 cursor-pointer">
-                  <input  type="radio" value="cod" {...register("paymentMethod")} /> Cash on Delivery
+                  <input
+                    type="radio"
+                    value="cod"
+                    {...register('paymentMethod')}
+                  />{' '}
+                  Cash on Delivery
                 </label>
                 <label className="flex gap-3 cursor-pointer">
-                  <input type="radio" value="bkash"  {...register("paymentMethod")} /> Bkash
+                  <input
+                    type="radio"
+                    value="bkash"
+                    {...register('paymentMethod')}
+                  />{' '}
+                  Bkash
                 </label>
 
-               {paymentMethod === "bkash" && (
-  <div className="space-y-4 bg-pink-50 border border-pink-200 rounded-xl p-4">
-    {/* Instruction */}
-    <div className="text-center">
-      <p className="text-base font-medium text-gray-700">
-       প্রথমে নিচের নাম্বারে সেন্ড মানি করেনঃ
-      </p>
-      <p className="text-lg font-bold text-pink-600 mt-1">
-        {StoreConfigaration.payment.bkash.acc_number}
-      </p>
-      <p className="text-sm text-gray-600 mt-1">
-        {StoreConfigaration.payment.bkash.message}
-      </p>
-    </div>
+                {paymentMethod === 'bkash' && (
+                  <div className="space-y-4 bg-pink-50 border border-pink-200 rounded-xl p-4">
+                    {/* Instruction */}
+                    <div className="text-center">
+                      <p className="text-base font-medium text-gray-700">
+                        প্রথমে নিচের নাম্বারে সেন্ড মানি করেনঃ
+                      </p>
+                      <p className="text-lg font-bold text-pink-600 mt-1">
+                        {StoreConfigaration.payment.bkash.acc_number}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {StoreConfigaration.payment.bkash.message}
+                      </p>
+                    </div>
 
-    {/* Form Fields */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="flex flex-col">
-        <input
-          {...register("bkashNumber")}
-          placeholder="আপনার বিকাশ নাম্বার"
-          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
-        />
-        {errors.bkashNumber && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.bkashNumber.message}
-          </p>
-        )}
-      </div>
+                    {/* Form Fields */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex flex-col">
+                        <input
+                          {...register('bkashNumber')}
+                          placeholder="আপনার বিকাশ নাম্বার"
+                          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
+                        />
+                        {errors.bkashNumber && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.bkashNumber.message}
+                          </p>
+                        )}
+                      </div>
 
-      <div className="flex flex-col">
-        <input
-          {...register("trxId")}
-          placeholder="Trx ID লিখুন"
-          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
-        />
-        {errors.trxId && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.trxId.message}
-          </p>
-        )}
-      </div>
-    </div>
-  </div>
-)}
-
+                      <div className="flex flex-col">
+                        <input
+                          {...register('trxId')}
+                          placeholder="Trx ID লিখুন"
+                          className="input border border-gray-300 bg-white rounded-lg p-2 focus:ring-2 focus:ring-pink-400 focus:outline-none"
+                        />
+                        {errors.trxId && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.trxId.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -193,9 +232,9 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-6 w-full cursor-pointer py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-gray-600"
+                className="mt-6 w-full cursor-pointer py-3 bg-gray-800 text-white  rounded-xl hover:bg-gray-600"
               >
-                {isSubmitting ? "Processing..." : "Place Order"}
+                {isSubmitting ? 'Processing...' : 'Place Order'}
               </button>
             </div>
           </div>
@@ -204,5 +243,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
-

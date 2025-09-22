@@ -1,15 +1,15 @@
 'use client';
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
-import { Product } from "@/types";
-import { formatPrice } from "@/utils";
-import { useRouter } from "next/navigation";
-import { useCartStore } from "@/store";
-import toast from "react-hot-toast";
-import { StoreConfigaration } from "@/constant";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ShoppingCart, Plus, Minus } from 'lucide-react';
+import { Product } from '@/types';
+import { formatPrice } from '@/utils';
+import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/store';
+import toast from 'react-hot-toast';
+import { StoreConfigaration } from '@/constant';
 
 type Props = {
   product: Product;
@@ -32,21 +32,28 @@ export default function ProductCard({ product }: Props) {
     short_desc,
   } = product;
 
-  const discountedPrice = discount_status
-    ? +(price - (price * discount) / 100)
-    : price;
+  const discountedPrice = discount_status ? +(price - (price * discount) / 100) : price;
   const hasDiscount = discount_status && discount > 0;
-  const findcart = cartList.find((item) => item.id === id);
+  const findCart = cartList.find((item) => item.id === id);
+  const maxCartQuantity = StoreConfigaration.product.cart.max_add_tocart;
 
   const handleOrder = () => {
-    toast.success("Add to cart");
+    toast.success('Added to cart!');
     addToCart({ ...product });
-    router.push("/cart");
+    router.push('/cart');
+  };
+
+  const handleQuantityUpdate = (quantity: number) => {
+    if (quantity > maxCartQuantity) {
+      toast.error(`You can't add more than ${maxCartQuantity} of this item.`);
+      return;
+    }
+    updateQuantity(id, quantity);
   };
 
   return (
     <article
-      className="group relative rounded-2xl shadow-2xl shadow-gray-100 border border-gray-200 overflow-hidden transition-all duration-300 transform hover:-translate-y-1"
+      className={`group relative rounded-2xl shadow-2xl shadow-gray-100 border border-gray-200 overflow-hidden transition-all duration-300 transform hover:-translate-y-1`}
       aria-labelledby={`product-${product.id}-title`}
       tabIndex={0}
     >
@@ -62,14 +69,14 @@ export default function ProductCard({ product }: Props) {
             alt={name}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
             priority={false}
           />
         </Link>
 
         {/* Discount Badge */}
         {hasDiscount && (
-          <span className="absolute top-3 left-3 z-10 inline-flex items-center text-xs font-bold px-3 py-1 rounded-full bg-red-500 text-white shadow-md">
+          <span className="absolute top-3 left-3 z-10 inline-flex items-center text-xs font-bold px-3 py-1 rounded-md bg-red-500 text-white shadow-md">
             -{discount}%
           </span>
         )}
@@ -83,60 +90,55 @@ export default function ProductCard({ product }: Props) {
         >
           <h3
             id={`product-${product.id}-title`}
-            className="text-base font-bold text-gray-900 leading-tight line-clamp-2"
+            className="text-lg font-bold text-gray-900 leading-tight line-clamp-2"
           >
             {name}
           </h3>
-          <p className="text-xs text-gray-500 mt-1 line-clamp-2">{short_desc}</p>
+          <p className="text-xs text-gray-500 mt-1 line-clamp-2 truncate">{short_desc}</p>
         </Link>
 
-        {/* Price */}
+        {/* Price Section */}
         <div className="mt-4 flex flex-col">
           <div className="flex items-center gap-2">
-            <span className="text-xl font-extrabold text-gray-600">
+            <span className={`text-xl font-extrabold ${StoreConfigaration.components.price_text_color}`}>
               {formatPrice(discountedPrice)}
             </span>
             {hasDiscount && (
-              <span className="text-sm line-through text-gray-400">
+              <span className="text-lg line-through text-gray-400">
                 {formatPrice(price)}
               </span>
             )}
           </div>
         </div>
 
-        {/* Add to Cart Button */}
-        {findcart ? (
-          <div className="flex mt-4 py-2.5 items-center gap-2 w-fit mx-auto overflow-hidden">
+        {/* Add to Cart/Quantity Controls */}
+        {findCart ? (
+          <div className="flex items-center justify-between mt-4">
             <button
-              onClick={() => updateQuantity(findcart.id, findcart.quantity - 1)}
-              disabled={findcart.quantity <= 1}
-              className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md cursor-pointer font-bold hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              onClick={() => handleQuantityUpdate(findCart.quantity - 1)}
+              disabled={findCart.quantity <= 1}
+              className="p-2 bg-gray-200 text-gray-700 rounded-lg cursor-pointer font-bold hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              -
+              <Minus size={20} />
             </button>
 
-            <span className="px-4 py-1 bg-white text-gray-900 font-medium">
-              {findcart.quantity}
+            <span className="text-lg font-semibold px-4 text-gray-900">
+              {findCart.quantity}
             </span>
 
             <button
-              onClick={() => {
-                if (findcart.quantity >= StoreConfigaration.product.cart.max_add_tocart-1) {
-                  toast.error("Maximum 10 products allowed at a time!");
-                }
-                addToCart(findcart, 1);
-              }}
-              disabled={findcart.quantity >= StoreConfigaration.product.cart.max_add_tocart}
-              className="px-3 py-1 bg-gray-200 text-gray-700 cursor-pointer font-bold rounded-md hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => handleQuantityUpdate(findCart.quantity + 1)}
+              disabled={findCart.quantity >= maxCartQuantity}
+              className="p-2 bg-gray-200 text-gray-700 cursor-pointer font-bold rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              +
+              <Plus size={20} />
             </button>
           </div>
         ) : (
           <button
             onClick={handleOrder}
             aria-label={`Add ${name} to cart`}
-            className="mt-4 cursor-pointer w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300 bg-gray-600 text-white hover:bg-gray-700 shadow-md"
+            className={`mt-4 cursor-pointer w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl  text-white transition-all duration-300 shadow-md transform hover:scale-105 ${StoreConfigaration.components.btn_bg} hover:${StoreConfigaration.components.btn_bg_hover}`}
           >
             <ShoppingCart size={18} />
             <span>Order now</span>

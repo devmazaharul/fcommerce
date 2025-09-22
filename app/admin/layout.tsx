@@ -19,10 +19,17 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { authData, logout } from '@/server/admin';
+import { Space_Grotesk } from 'next/font/google';
 
 type Props = {
   children: ReactNode;
 };
+
+const fontSetup=Space_Grotesk({
+  weight:"400",
+  style:"normal",
+  subsets:["latin"]
+})
 
 export default function AdminLayout({ children }: Props) {
   const [user, setUser] = useState<{ name: string; email: string | null }>({
@@ -54,17 +61,15 @@ export default function AdminLayout({ children }: Props) {
           name: res.data?.name as string ?? '',
           email: res.data?.email as string ?? null,
         });
-      } else {
-        handleLogout();
-      }
+      } 
     };
     fetchUser();
   }, []); // functional update used, dependency warning gone
 
   return (
     <html>
-      <body>
-        <div className="flex h-screen bg-white font-sans">
+      <body className={fontSetup.className}>
+        <div className="flex h-screen bg-white ">
           {/* Sidebar */}
           <aside className="w-16 bg-gray-800 text-gray-100 print:hidden flex flex-col relative">
             <div className="p-4 text-center border-b border-gray-700">

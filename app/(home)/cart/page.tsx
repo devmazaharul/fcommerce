@@ -30,7 +30,7 @@ export default function CartPage() {
         </p>
         <Link
           href="/products"
-          className="mt-6 inline-block bg-gray-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-700 transition-colors duration-300"
+          className="mt-6 inline-block bg-gray-600 text-white py-3 px-8 rounded-full shadow-lg hover:bg-gray-700 transition-colors duration-300"
         >
           Continue Shopping
         </Link>
@@ -147,14 +147,14 @@ export default function CartPage() {
               </div>
             </div>
             <button
-              className="mt-6 w-full cursor-pointer py-3 bg-gray-700 text-white font-semibold rounded-xl shadow-md hover:bg-gray-900 transition-colors duration-300"
+              className="mt-6 w-full cursor-pointer py-3 bg-gray-700 text-white rounded-xl shadow-md hover:bg-gray-900 transition-colors duration-300"
               onClick={() => router.push('/checkout')}
             >
               Proceed to Checkout
             </button>
             <Link
               href="/products"
-              className="mt-4 w-full text-center inline-block py-3 font-semibold text-gray-600 hover:text-gray-900 transition-colors duration-300"
+              className="mt-4 w-full text-center inline-block py-3  text-gray-600 hover:text-gray-900 transition-colors duration-300"
             >
               Continue Shopping
             </Link>
