@@ -23,8 +23,8 @@ export async function middleware(req: NextRequest) {
 
     // টোকেন আছে, এখন এর বৈধতা যাচাই করুন।
     try {
-      //const isValid = await verifyToken(token);
-      const isValid = true
+      const isValid = await verifyToken(token);
+      //const isValid = true
       if (!isValid) {
         // টোকেন বৈধ না হলে, তাকে /access পেজে রিডাইরেক্ট করুন।
         url.pathname = '/access';
