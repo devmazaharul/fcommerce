@@ -159,7 +159,9 @@ export default function AdminLayout({ children }: Props) {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+                 <Link href={'/admin/settings'}>
                       <User size={16} /> Settings
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={handleLogout}

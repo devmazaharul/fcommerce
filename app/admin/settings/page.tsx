@@ -72,6 +72,7 @@ const [email, setemail] = useState("")
       phone:updateFun.data?.phone || '',
     })
     toast.success("Successfully updated")
+    router.push("/admin")
   } catch (error:unknown) {
     if(error instanceof Error){
       toast.error(error.message)

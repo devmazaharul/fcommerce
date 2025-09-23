@@ -68,4 +68,9 @@ const updateProductInfo = async (
   };
 };
 
-export { getAllProducts, createProduct, getProductById, updateProductInfo };
+
+const deleteProductWithId =async(productid:string)=>{
+  return supabase.from("products").delete().eq("id",productid).single()
+}
+
+export { getAllProducts, createProduct, getProductById, updateProductInfo,deleteProductWithId  };

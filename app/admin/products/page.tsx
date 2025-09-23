@@ -38,7 +38,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Product } from '@/types';
-import { getAllProducts } from '@/server/products';
+import { deleteProductWithId, getAllProducts } from '@/server/products';
 import Link from 'next/link';
 import { formatPrice } from '@/utils';
 import toast from 'react-hot-toast';
@@ -106,13 +106,20 @@ export default function ProductsPage() {
   }, [products, currentPage]);
 
   type actionType="details" | "edit" |"delete"
-  const handleAction = (action: actionType, productId: string) => {
+  const handleAction =async (action: actionType, productId: string) => {
     if(action=="details"){
         router.push("/admin/products/details/"+productId)
     }else if(action=="edit"){
   router.push("/admin/products/edit/"+productId)
     }else if(action=="delete"){
         //delete loginc
+        const responseDlt=await deleteProductWithId(productId)
+        if(responseDlt.error){
+          toast.error("Product delete error")
+          return
+        }
+        toast.success("Product has been deleted")
+
     }else{
       toast.error("invalid action")
     }
