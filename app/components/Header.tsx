@@ -1,8 +1,8 @@
 'use client';
-import {Agdasima ,Acme} from 'next/font/google';
+import {Acme} from 'next/font/google';
 import React from 'react';
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/store';
 import { usePathname } from 'next/navigation';
 import { StoreConfigaration } from '@/constant';
@@ -22,7 +22,7 @@ export default function Header() {
           return 
       }
   return (
-    <header className="w-full  shadow-2xl shadow-gray-100 border-b  border-b-gray-200 bg-white sticky top-0 z-50">
+    <header className="w-full  shadow-2xl shadow-gray-100 border-b  border-b-gray-100 bg-white sticky top-0 z-50">
       <div className="container mx-auto px-10 py-4 flex justify-between items-center">
         
         {/* Left: Logo */}
@@ -34,7 +34,7 @@ export default function Header() {
 
         {/* Right: Cart */}
         <Link href="/cart" className="relative flex items-center">
-          <ShoppingCart size={28} className="text-gray-700 hover:text-gray-900 transition-colors" />
+          <ShoppingBag  size={28} className="text-gray-700 hover:text-gray-900 transition-colors" />
           
           {/* Cart Badge */}
           {totalItems > 0 && (

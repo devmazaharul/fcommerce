@@ -34,6 +34,8 @@ export default function AddProductForm() {
     },
   });
 
+
+
   const onSubmit = async (values: ProductFormValues) => {
     try {
       const response=await createProduct(values)
@@ -105,7 +107,7 @@ export default function AddProductForm() {
                   max={100}
                   {...register("discount", { valueAsNumber: true })}
                   placeholder="0"
-                  disabled={!value} // ✅ enable only when checkbox is checked
+                  disabled={!value } // ✅ enable only when checkbox is checked
                 />
               )}
             />

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import {Space_Grotesk,Raleway } from 'next/font/google';
+import {Space_Grotesk } from 'next/font/google';
 import '../globals.css';
 import { StoreConfigaration } from '@/constant';
 import { Toaster } from 'react-hot-toast';

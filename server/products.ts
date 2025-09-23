@@ -23,4 +23,41 @@ const getAllProducts = async () => {
   }
 };
 
-export { getAllProducts,createProduct };
+
+
+const getProductById=(productid:string)=>{
+  return supabase.from("products").select("*").eq("id",productid).single()
+}
+
+
+
+ const updateProductInfo = async (newProd: createProductType & {id:string}) => {
+  const { data, error } = await supabase
+    .from("products")
+    .update({
+      name: newProd.name,
+      short_desc: newProd.short_desc,
+      long_desc: newProd.long_desc,
+      price: newProd.price,
+      discount: newProd.discount,
+      discount_status: newProd.discount_status,
+      category: newProd.category,
+      image: newProd.image,
+    })
+    .eq("id", newProd.id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return{
+    status:true,
+     data
+  }
+}
+
+
+
+export { getAllProducts,createProduct,getProductById,updateProductInfo };
