@@ -1,14 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 
-// utils/format.ts
 
-/**
- * একটি সংখ্যাকে সংক্ষিপ্ত করে এবং মুদ্রা ফরম্যাটে রূপান্তর করে।
- *
- * @param value ফরম্যাট করার জন্য সংখ্যা।
- * @param options একটি ঐচ্ছিক অবজেক্ট যাতে লোকাল, মুদ্রা, এবং অন্যান্য অপশন থাকতে পারে।
- * @returns ফরম্যাট করা স্ট্রিং।
- */
  const formatPrice = (
   value: number,
   options?: {

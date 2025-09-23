@@ -45,10 +45,10 @@ export const StoreConfigaration=Object.freeze({
   },
   price: {
     min: { value: 1, message: "Price must be greater than 0" },
-    max: { value: 100000, message: "Price must not exceed 100000" },
+    max: { value: 1000000, message: "Price must not exceed 1000000" },
   },
   discount: {
-    min: { value: 0, message: "Discount cannot be negative" },
+    min: { value: 1, message: "Discount cannot be negative" },
     max: { value: 100, message: "Discount cannot be more than 100%" },
   },
   discount_status: {

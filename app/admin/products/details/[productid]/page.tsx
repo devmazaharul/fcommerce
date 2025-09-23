@@ -135,7 +135,7 @@ export default function ProductPage() {
               {product.discount_status && (
                 <p className="flex justify-between text-red-600">
                   <span>Discount:</span>
-                  <span>- {formatPrice(product.discount)}</span>
+                  <span>- {product.discount}%</span>
                 </p>
               )}
               <hr className="my-2" />

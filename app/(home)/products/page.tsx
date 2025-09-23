@@ -1,5 +1,5 @@
 
-import React from 'react';
+export const dynamic = "force-dynamic";
 
 import { getAllProducts } from '@/server/products';
 import ProductCard from '@/app/components/Card';
