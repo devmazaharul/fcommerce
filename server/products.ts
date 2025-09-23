@@ -3,34 +3,31 @@ import { supabase } from '@/utils/supabaseClient';
 
 const createProduct = async (product: createProductType) => {
   let productCounter = 1;
-function generateSlug(name: string) {
+  function generateSlug(name: string) {
+    const isEnglishOnly = /^[a-zA-Z0-9\s-]+$/.test(name);
 
-  const isEnglishOnly = /^[a-zA-Z0-9\s-]+$/.test(name);
+    if (!isEnglishOnly) {
+      return `product-${Date.now()}-${productCounter++}`;
+    }
 
-  if (!isEnglishOnly) {
-
-    return `product-${Date.now()}-${productCounter++}`;
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
   }
-
-
-  return name
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-");
-}
   const newProd = {
     ...product,
     slug: generateSlug(product.name),
     sku: 'SKU-' + Math.floor(Math.random() * 1000000), // random sku
   };
 
- return await supabase.from('products').insert(newProd).select();
+  return await supabase.from('products').insert(newProd).select();
 };
 
 const getAllProducts = async () => {
   try {
-    const { error, data } = await supabase.from('products').select('*');
+    const { error, data } = await supabase.from('products').select('*').order("createdat",{ascending:false})
     if (error) throw new Error('product fatching error');
     return data;
   } catch (error) {
@@ -38,17 +35,15 @@ const getAllProducts = async () => {
   }
 };
 
+const getProductById = (productid: string) => {
+  return supabase.from('products').select('*').eq('id', productid).single();
+};
 
-
-const getProductById=(productid:string)=>{
-  return supabase.from("products").select("*").eq("id",productid).single()
-}
-
-
-
- const updateProductInfo = async (newProd: createProductType & {id:string}) => {
+const updateProductInfo = async (
+  newProd: createProductType & { id: string }
+) => {
   const { data, error } = await supabase
-    .from("products")
+    .from('products')
     .update({
       name: newProd.name,
       short_desc: newProd.short_desc,
@@ -59,7 +54,7 @@ const getProductById=(productid:string)=>{
       category: newProd.category,
       image: newProd.image,
     })
-    .eq("id", newProd.id)
+    .eq('id', newProd.id)
     .select()
     .single();
 
@@ -67,12 +62,10 @@ const getProductById=(productid:string)=>{
     throw new Error(error.message);
   }
 
-  return{
-    status:true,
-     data
-  }
-}
+  return {
+    status: true,
+    data,
+  };
+};
 
-
-
-export { getAllProducts,createProduct,getProductById,updateProductInfo };
+export { getAllProducts, createProduct, getProductById, updateProductInfo };
