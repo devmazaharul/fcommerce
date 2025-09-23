@@ -83,7 +83,7 @@ export default function ProductDetails({ product }: Props) {
             <div className="text-sm text-gray-500">
               <span className="capitalize">{category}</span>
               <span className="mx-2">•</span>
-              <span className="font-medium">SKU: {sku}</span>
+              <span className="font-medium"> {sku}</span>
             </div>
 
             {/* Title */}
@@ -128,7 +128,7 @@ export default function ProductDetails({ product }: Props) {
         </div>
 
         {/* Long Description */}
-        <div className="mt-16  p-8">
+        <div className="mt-16  p-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Product Description
           </h2>
