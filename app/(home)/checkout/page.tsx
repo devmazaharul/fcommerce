@@ -226,7 +226,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between font-bold border-t pt-4">
                   <span>Total</span>
-                  <span>{formatPrice(totalPrice)}</span>
+                  <span className='font-extrabold'>{formatPrice(totalPrice)}</span>
                 </div>
               </div>
               <button

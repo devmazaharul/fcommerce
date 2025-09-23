@@ -143,7 +143,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between items-center text-gray-700 font-bold text-lg pt-4 border-t border-gray-200">
                 <span>Total</span>
-                <span>{formatPrice(totalPrice)}</span>
+                <span className='font-extrabold'>{formatPrice(totalPrice)}</span>
               </div>
             </div>
             <button
