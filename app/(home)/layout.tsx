@@ -1,15 +1,23 @@
 import type { Metadata } from 'next';
-import {Space_Grotesk } from 'next/font/google';
+import {Geist_Mono,Geist } from 'next/font/google';
 import '../globals.css';
 import { StoreConfigaration } from '@/constant';
 import { Toaster } from 'react-hot-toast';
 import Header from '../components/Header';
 
-const fontSetup=Space_Grotesk({
-  weight:"400",
-  style:"normal",
-  subsets:["vietnamese"]
-})
+
+
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
 
 const { title, doamin, description, name, locale, keywords, authors } =
   StoreConfigaration.storeInfo;
@@ -66,7 +74,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fontSetup.className} `}
+         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <Header/>
       <div className='w-[90%] mx-auto '>

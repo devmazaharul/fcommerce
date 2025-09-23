@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   Pagination,
   PaginationContent,
@@ -12,14 +13,7 @@ import {
 } from '@/components/ui/pagination';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -39,16 +33,14 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { Product } from '@/types';
 import { deleteProductWithId, getAllProducts } from '@/server/products';
-import Link from 'next/link';
 import { formatPrice } from '@/utils';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-
 const itemsPerPage = 10;
 
 export default function ProductsPage() {
-  const router=useRouter()
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortCriteria, setSortCriteria] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,47 +48,46 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Filtering & Sorting
-  useEffect(() => {
-    const fetchAndFilterProducts = async () => {
-      setLoading(true);
-      try {
-        const allProducts= await getAllProducts();
-        if (!allProducts) throw new Error("Failed to fetch products.");
+  // Fetch & filter products
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const allProducts = await getAllProducts();
+      if (!allProducts) throw new Error("Failed to fetch products.");
 
-        const filtered = allProducts.filter((p) =>
-          [p.name, p.category, p.sku].some((field) =>
-            field.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-        );
+      const filtered = allProducts.filter((p) =>
+        [p.name, p.category, p.sku].some((field) =>
+          field.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
 
-        switch (sortCriteria) {
-          case 'newest':
-            // Assuming ID represents creation order
-            filtered.sort((a, b) => b.id.localeCompare(a.id));
-            break;
-          case 'oldest':
-            filtered.sort((a, b) => a.id.localeCompare(b.id));
-            break;
-          case 'price_desc':
-            filtered.sort((a, b) => b.price - a.price);
-            break;
-          case 'price_asc':
-            filtered.sort((a, b) => a.price - b.price);
-            break;
-        }
-
-        setProducts(filtered);
-      } catch (error) {
-        toast.error('Error fetching products.');
-        console.error(error);
-      } finally {
-        setLoading(false);
-        setCurrentPage(1);
+      switch (sortCriteria) {
+        case 'newest':
+          filtered.sort((a, b) => b.id.localeCompare(a.id));
+          break;
+        case 'oldest':
+          filtered.sort((a, b) => a.id.localeCompare(b.id));
+          break;
+        case 'price_desc':
+          filtered.sort((a, b) => b.price - a.price);
+          break;
+        case 'price_asc':
+          filtered.sort((a, b) => a.price - b.price);
+          break;
       }
-    };
 
-    fetchAndFilterProducts();
+      setProducts(filtered);
+    } catch (error) {
+      toast.error('Error fetching products.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setCurrentPage(1);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, [searchQuery, sortCriteria]);
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -105,23 +96,23 @@ export default function ProductsPage() {
     return products.slice(start, start + itemsPerPage);
   }, [products, currentPage]);
 
-  type actionType="details" | "edit" |"delete"
-  const handleAction =async (action: actionType, productId: string) => {
-    if(action=="details"){
-        router.push("/admin/products/details/"+productId)
-    }else if(action=="edit"){
-  router.push("/admin/products/edit/"+productId)
-    }else if(action=="delete"){
-        //delete loginc
-        const responseDlt=await deleteProductWithId(productId)
-        if(responseDlt.error){
-          toast.error("Product delete error")
-          return
-        }
-        toast.success("Product has been deleted")
-
-    }else{
-      toast.error("invalid action")
+  type actionType = 'details' | 'edit' | 'delete';
+  const handleAction = async (action: actionType, productId: string) => {
+    if (action === 'details') {
+      router.push('/admin/products/details/' + productId);
+    } else if (action === 'edit') {
+      router.push('/admin/products/edit/' + productId);
+    } else if (action === 'delete') {
+      if (!confirm("Are you sure?")) return;
+      const responseDlt = await deleteProductWithId(productId);
+      if (responseDlt.error) {
+        toast.error("Product delete error");
+        return;
+      }
+      toast.success("Product has been deleted");
+      fetchProducts(); // refresh after delete
+    } else {
+      toast.error("Invalid action");
     }
   };
 
@@ -140,7 +131,7 @@ export default function ProductsPage() {
   );
 
   return (
-    <div className=" min-h-screen ">
+    <div className="min-h-screen">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
@@ -149,12 +140,12 @@ export default function ProductsPage() {
             <h1 className="text-3xl font-extrabold text-gray-800">Product Dashboard</h1>
           </div>
           <Link href={"/admin/products/add"} className="mt-3 sm:mt-0 flex items-center gap-2 cursor-pointer">
-            <Button className='cursor-pointer'> <PlusCircle size={18} /> Add Product</Button>
+            <Button className='cursor-pointer'><PlusCircle size={18} /> Add Product</Button>
           </Link>
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 p-4 mb-6  rounded-xl shadow-2xl shadow-gray-50 border border-gray-100">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 p-4 mb-6 rounded-xl shadow-2xl shadow-gray-50 border border-gray-100">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
             <Input
@@ -166,34 +157,15 @@ export default function ProductsPage() {
           </div>
 
           <Select value={sortCriteria} onValueChange={setSortCriteria}>
-            <SelectTrigger className="
-              w-full md:w-52 
-              rounded-md 
-              cursor-pointer
-              border border-gray-300 
-              bg-gray-50 
-              text-gray-700 
-              hover:bg-gray-100 
-              focus-visible:ring-2 focus-visible:ring-gray-600 focus-visible:border-gray-600
-              transition-colors duration-200
-              flex items-center
-            ">
+            <SelectTrigger className="w-full md:w-52 rounded-md cursor-pointer border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 flex items-center transition-colors duration-200">
               <ArrowUpDown className="mr-2 h-4 w-4 text-gray-500" />
-              <SelectValue placeholder="Sort by "  />
+              <SelectValue placeholder="Sort by " />
             </SelectTrigger>
             <SelectContent className="bg-white border border-gray-200 rounded-md shadow-lg">
-              <SelectItem value="newest" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">
-                Newest First
-              </SelectItem>
-              <SelectItem value="oldest" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">
-                Oldest First
-              </SelectItem>
-              <SelectItem value="price_desc" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">
-                Price (High → Low)
-              </SelectItem>
-              <SelectItem value="price_asc" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">
-                Price (Low → High)
-              </SelectItem>
+              <SelectItem value="newest" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">Newest First</SelectItem>
+              <SelectItem value="oldest" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">Oldest First</SelectItem>
+              <SelectItem value="price_desc" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">Price (High → Low)</SelectItem>
+              <SelectItem value="price_asc" className="hover:bg-gray-100 px-2 py-1 rounded transition-colors duration-150 cursor-pointer">Price (Low → High)</SelectItem>
             </SelectContent>
           </Select>
 
@@ -242,9 +214,7 @@ export default function ProductsPage() {
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="font-bold text-gray-900">{formatPrice(p.price)}</span>
-                        {p.discount_status && (
-                          <span className="text-xs text-red-500">-{p.discount}% off</span>
-                        )}
+                        {p.discount_status && <span className="text-xs text-red-500">-{p.discount}% off</span>}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
@@ -258,7 +228,7 @@ export default function ProductsPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem className='cursor-pointer' onClick={() => handleAction('edit', p.id)}>Edit</DropdownMenuItem>
                           <DropdownMenuItem className='cursor-pointer' onClick={() => handleAction('details', p.id)}>View Details</DropdownMenuItem>
-                          <DropdownMenuItem  onClick={() => handleAction('delete', p.id)} className="text-red-600 cursor-pointer">Delete</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleAction('delete', p.id)} className="text-red-600 cursor-pointer">Delete</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

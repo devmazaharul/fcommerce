@@ -84,17 +84,20 @@ export default function ProductCard({ product }: Props) {
 
       {/* Product Information */}
       <div className="p-4 flex flex-col flex-1">
+
+
+
         <Link
           href={`/products/${slug}`}
           aria-label={`Open ${name} product page`}
         >
           <h3
             id={`product-${product.id}-title`}
-            className="text-lg font-bold text-gray-900 leading-tight line-clamp-2"
+           className="text-lg font-semibold text-gray-800 truncate"
           >
             {name}
           </h3>
-          <p className="text-xs text-gray-500 mt-1 line-clamp-2 truncate">{short_desc}</p>
+          <p className="text-sm text-gray-500 line-clamp-2">{short_desc}</p>
         </Link>
 
         {/* Price Section */}

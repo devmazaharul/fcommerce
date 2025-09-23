@@ -2,13 +2,14 @@
 
 import { Product } from '@/types';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { formatPrice } from '@/utils';
 import { useCartStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { StoreConfigaration } from '@/constant';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Props = {
   product: Product;
@@ -38,93 +39,97 @@ export default function ProductDetails({ product }: Props) {
   const findCurrentProduct = cartList.find((item) => item.id === id);
   const router = useRouter();
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   const handleCart = () => {
-    // If the product is already in the cart, navigate to the cart page
     if (findCurrentProduct) {
       router.push('/cart');
       return;
     }
-    
-    // Add to cart and then navigate
+
     addToCart({ ...product });
     toast.success(`${name} added to cart!`);
     router.push('/cart');
   };
 
   return (
-    <div className=" min-h-screen ">
-      <div className="container mx-auto md:px-4 py-12 lg:py-16">
-        
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-12  p-6 lg:p-10 ">
+    <div className="min-h-screen ">
+      <div className="container mx-auto px-4 py-12 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left: Product Image */}
-          <div className="lg:w-1/2 relative overflow-hidden ">
-            <div className="relative w-full aspect-square overflow-hidden group ">
+          <div className="relative">
+            <div className="relative w-full aspect-square overflow-hidden  group">
+              {!imgLoaded && (
+                <Skeleton className="absolute inset-0 rounded-2xl" />
+              )}
               <Image
                 src={image}
                 alt={name}
                 fill
-                className="object-cover transition-transform duration-500 p-5 group-hover:scale-105"
+                className={`object-contain rounded-md p-6 transition-transform duration-500 group-hover:scale-105 ${
+                  imgLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 priority
+                onLoadingComplete={() => setImgLoaded(true)}
               />
+            
             </div>
-
-            {hasDiscount && (
-              <span className="absolute top-4 left-4 z-10 bg-red-600 text-white font-bold px-3 py-1 rounded-full shadow-lg text-sm">
-                -{discount}%
-              </span>
-            )}
           </div>
 
-          {/* Right: Product Details and Actions */}
-          <div className="lg:w-1/2 flex flex-col justify-between">
-            <div className="space-y-3">
-              <span className="text-sm text-gray-500 font-medium">
-                {category}
+          {/* Right: Product Details */}
+          <div className="flex flex-col gap-6">
+            {/* Meta */}
+            <div className="text-sm text-gray-500">
+              <span className="capitalize">{category}</span>
+              <span className="mx-2">•</span>
+              <span className="font-medium">SKU: {sku}</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {name}
+            </h1>
+
+            {/* Short Desc */}
+            <p className="text-gray-600 text-lg">{short_desc}</p>
+
+            {/* Price */}
+            <div className="flex items-end gap-3">
+              <span className="text-3xl md:text-4xl font-extrabold text-gray-800">
+                {formatPrice(discountedPrice)}
               </span>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
-                {name}
-              </h1>
-              <p className="text-gray-600 text-lg">{short_desc}</p>
-              
-              <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
-                <span>SKU:</span>
-                <span className="text-gray-800 font-semibold">{sku}</span>
-              </div>
+              {hasDiscount && (
+                <span className="line-through text-lg text-gray-400">
+                  {formatPrice(price)}
+                </span>
+              )}
+              {hasDiscount && (
+                <span className="px-2 py-0.5 bg-red-500 text-white font-medium text-sm rounded-md">
+                  Save {discount}%
+                </span>
+              )}
             </div>
 
-            {/* Price section */}
-            <div className="mt-6 flex flex-col items-start gap-2">
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl md:text-4xl font-extrabold text-gray-700">{formatPrice(discountedPrice)}</span>
-                {hasDiscount && (
-                  <span className="line-through text-gray-400 text-xl">
-                    {formatPrice(price)}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Add to Cart button */}
+            {/* Add to Cart */}
             <button
               onClick={handleCart}
-              className={`mt-8 w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl  cursor-pointer text-lg transition-all duration-300
-                ${findCurrentProduct
-                  ? 'bg-green-600 text-white hover:bg-green-700 shadow-md transform hover:scale-105'
-                  : `${StoreConfigaration.components.btn_details_bg} ${StoreConfigaration.components.btn_details_text} hover:${StoreConfigaration.components.btn_details_bg_hover} shadow-md transform hover:scale-105`
+              className={`w-fit flex items-center cursor-pointer justify-center gap-3 px-6 py-3 rounded-xl text-lg  transition-all duration-300 shadow-md
+                ${
+                  findCurrentProduct
+                    ? 'bg-green-600 text-white hover:bg-green-700 hover:scale-[1.02]'
+                    : `${StoreConfigaration.components.btn_details_bg} ${StoreConfigaration.components.btn_details_text} hover:${StoreConfigaration.components.btn_details_bg_hover} hover:scale-[1.02]`
                 }`}
             >
               <ShoppingCart size={20} />
-              <span>
-                {findCurrentProduct ? 'Go to cart' : 'Order now'}
-              </span>
+              {findCurrentProduct ? 'Go to cart' : 'Order now'}
             </button>
           </div>
         </div>
 
-        {/* Product Long Description Section */}
-        <div className="mt-12 p-6 lg:p-10  0">
-          <h2 className="text-2xl font-extrabold text-gray-900 mb-4  ">
+        {/* Long Description */}
+        <div className="mt-16  p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Product Description
           </h2>
           <p className="text-gray-700 leading-relaxed">{long_desc}</p>

@@ -58,7 +58,7 @@ export default function CartPage() {
               return (
                 <div
                   key={item.id}
-                  className="flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl shadow-2xl shadow-gray-100 border border-gray-100 transition-shadow duration-300 hover:shadow-lg"
+                  className="flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl shadow-2xl shadow-gray-50 border border-gray-200/60 transition-shadow duration-300 hover:shadow-lg"
                 >
                   <div className="w-28 h-28 relative flex-shrink-0">
                     <Image
@@ -128,7 +128,7 @@ export default function CartPage() {
           </div>
 
           {/* Right: Order Summary */}
-          <div className="lg:col-span-1  p-6 rounded-2xl shadow-2xl shadow-gray-200 border border-gray-100 sticky top-8 h-fit">
+          <div className="lg:col-span-1  p-6 rounded-2xl shadow-2xl shadow-gray-100 border border-gray-200/50 sticky top-8 h-fit">
             <h2 className="text-2xl font-bold mb-6 text-gray-900">
               Order Summary
             </h2>

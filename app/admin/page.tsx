@@ -79,7 +79,7 @@ export default function Dashboard() {
         ) : orders.length > 0 ? (
           <Table >
             <TableHeader>
-              <TableRow className="bg-gray-50">
+              <TableRow className="">
                 <TableHead>Name</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Payment</TableHead>

@@ -118,7 +118,7 @@ export default function OrdersTable() {
   });
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
+    <div className="min-h-screen p-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold">Orders</h1>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
@@ -180,7 +180,7 @@ export default function OrdersTable() {
                   key={idx}
                   className="hover:bg-gray-50 transition-colors duration-200 border-gray-200"
                 >
-                  <TableCell className="font-medium text-gray-900 whitespace-nowrap">{order.name}</TableCell>
+                  <TableCell className="font-medium text-gray-900 whitespace-nowrap capitalize">{order.name}</TableCell>
                   <TableCell className="text-gray-600 whitespace-nowrap">{order.phone}</TableCell>
                   <TableCell className="text-gray-600 max-w-[200px] whitespace-normal">{order.address}</TableCell>
                   <TableCell className="capitalize text-gray-600 whitespace-nowrap">{order.payment_method}</TableCell>
@@ -197,7 +197,7 @@ export default function OrdersTable() {
                         Confirm
                       </Button>
                     ) : (
-                      <p className="cursor-pointer text-green-600 font-medium whitespace-nowrap">Confirmed</p>
+                      <p className="cursor-pointer text-green-600  whitespace-nowrap">Confirmed</p>
                     )}
                   </TableCell>
                   <TableCell className="text-right">

@@ -19,18 +19,22 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { authData, logout } from '@/server/admin';
-import { Space_Grotesk } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 
 type Props = {
   children: ReactNode;
 };
 
-const fontSetup=Space_Grotesk({
-  weight:"400",
-  style:"normal",
-  subsets:["latin"]
-})
 
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 export default function AdminLayout({ children }: Props) {
   const [user, setUser] = useState<{ name: string; email: string | null }>({
     name: '',
@@ -68,7 +72,7 @@ export default function AdminLayout({ children }: Props) {
 
   return (
     <html>
-      <body className={fontSetup.className}>
+      <body     className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="flex h-screen bg-white ">
           {/* Sidebar */}
           <aside className="w-16 bg-gray-800 text-gray-100 print:hidden flex flex-col relative">
