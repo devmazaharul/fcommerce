@@ -2,11 +2,26 @@ import { createProductType, Product } from '@/types';
 import { supabase } from '@/utils/supabaseClient';
 
 const createProduct = async (product: createProductType) => {
-  const generateSlug = product.name.trim().toLowerCase().split(' ').join('-');
+  let productCounter = 1;
+function generateSlug(name: string) {
 
+  const isEnglishOnly = /^[a-zA-Z0-9\s-]+$/.test(name);
+
+  if (!isEnglishOnly) {
+
+    return `product-${Date.now()}-${productCounter++}`;
+  }
+
+
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
   const newProd = {
     ...product,
-    slug: generateSlug,
+    slug: generateSlug(product.name),
     sku: 'SKU-' + Math.floor(Math.random() * 1000000), // random sku
   };
 
