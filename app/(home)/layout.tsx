@@ -77,7 +77,7 @@ export default async function RootLayout({
          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <Header/>
-      <div className='w-[90%] mx-auto '>
+      <div className='w-[95%] mx-auto '>
         
           {children}
 

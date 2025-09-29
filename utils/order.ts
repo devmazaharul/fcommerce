@@ -5,7 +5,7 @@ export const orderSchema = z.object({
   phone: z.string().regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number"),
   address: z.string().min(10, "Address must be at least 10 characters"),
   note: z.string().optional(),
-  paymentMethod: z.enum(["cod", "bkash"]),
+  paymentMethod: z.enum(["cod", "bkash",'mpay']),
   bkashNumber: z.string().regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number").optional(),
   trxId: z.string().optional(),
 });

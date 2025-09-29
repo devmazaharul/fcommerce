@@ -61,7 +61,7 @@ export default async function Page({ params }: {params:Promise<{slug:string}>}) 
   }
 
   return (
-    <div className=" mx-auto  py-8">
+    <div className="mx-auto  py-8">
       <Productdetails product={findProduct} />
     </div>
   );

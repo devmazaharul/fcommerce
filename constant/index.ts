@@ -41,7 +41,7 @@ export const StoreConfigaration=Object.freeze({
   },
   long_desc: {
     min: { value: 10, message: "Long description must be at least 10 characters" },
-    max: { value: 1000, message: "Long description must be less than 1000 characters" },
+    max: { value: 3000, message: "Long description must be less than 1000 characters" },
   },
   price: {
     min: { value: 1, message: "Price must be greater than 0" },

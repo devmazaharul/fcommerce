@@ -24,7 +24,7 @@ export type createProductType={
 }
 
 
-type PaymentMethod = "bkash" | "cod";
+type PaymentMethod = "bkash" | "cod" | 'mpay'
 
 export interface Order {
   id?: string;

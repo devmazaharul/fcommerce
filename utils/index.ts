@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 
 
- const formatPrice = (
+const formatPrice = (
   value: number,
   options?: {
     locale?: string;
@@ -17,12 +17,16 @@ import { SignJWT, jwtVerify } from "jose";
     const formattedValue = new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
-      maximumFractionDigits: 0, 
+      minimumFractionDigits: 0, // ডেসিমাল বাদ
+      maximumFractionDigits: 0, // ডেসিমাল বাদ
     }).format(value);
 
-    // BDT চিহ্নের আগে স্পেস যোগ করা
-    return formattedValue.replace('BDT', '৳').replace('$', '৳');
-    
+    // BDT কে ৳ এ কনভার্ট করা
+    if (currency === "BDT") {
+      return formattedValue.replace("BDT", "৳");
+    }
+
+    return formattedValue;
   } catch (error) {
     console.error("Error formatting price:", error);
     return `${value} ${currency}`;

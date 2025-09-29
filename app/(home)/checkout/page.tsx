@@ -34,6 +34,27 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data: CheckoutFormType) => {
     try {
+let paymentId
+      if(data.paymentMethod=="mpay"){
+              
+        const payInit=await fetch("http://localhost:7070/api/init",{
+          method:"POST",
+          headers:{
+            "Content-type":"application/json",
+            "x-api-key":process.env.NEXT_PUBLIC_PAYMENT_API_KEY!
+          },
+    
+          body:JSON.stringify({amount:Math.round(totalPrice)})
+        })
+        const data=await payInit.json()
+       if(data.status==200){
+        paymentId=data.item.paymentId
+        window.location.href=data.item.url
+       }else{
+        throw new Error("Invalid mazapayment")
+       }
+      }
+
       const makeOrderObj = {
         name: data.name,
         phone: data.phone,
@@ -41,7 +62,7 @@ export default function CheckoutPage() {
         note: data.note,
         payment_method: data.paymentMethod,
         bkash_number: data.paymentMethod == 'bkash' ? data.bkashNumber : '',
-        trx_id: data.paymentMethod === 'bkash' ? data.trxId! : 'cod-39934548',
+        trx_id: data.paymentMethod === 'bkash' ? data.trxId! : data.paymentMethod=="mpay"?`${paymentId}-(pending)`:'cod-39934548',
         product_ids: cart.map((item) => item.id),
         total: totalPrice,
       };
@@ -72,7 +93,8 @@ export default function CheckoutPage() {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-12 lg:py-16">
         <h1 className="text-4xl lg:text-5xl font-extrabold mb-8 text-center md:text-left">
-          Secure Checkout
+
+          Secure Checkout 
         </h1>
 
         <form
@@ -150,6 +172,14 @@ export default function CheckoutPage() {
                     {...register('paymentMethod')}
                   />{' '}
                   Cash on Delivery
+                </label>
+                <label className="flex gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    value="mpay"
+                    {...register('paymentMethod')}
+                  />{' '}
+                mazaPay
                 </label>
                 <label className="flex gap-3 cursor-pointer">
                   <input
