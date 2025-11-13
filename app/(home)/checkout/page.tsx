@@ -162,8 +162,7 @@ export default function CheckoutPage() {
                         <div className="bg-white p-5 md:p-8 rounded-xl shadow-2xl shadow-gray-100 border border-gray-100">
                             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                                 <Package size={24} /> Delivery Location 
-                                {process.env.NEXT_PUBLIC_PAYMENT_API_URL}
-                                {process.env.NEXT_PUBLIC_PAYMENT_API_KEY}
+                                
                             </h2>
                             <div className="flex flex-col gap-4">
                                 <label className="flex gap-3 cursor-pointer">
