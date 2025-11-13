@@ -5,6 +5,7 @@ import "../globals.css"
     <body>
       <div>
         {children}
+        
       </div>
         <Toaster
           position="top-right"
