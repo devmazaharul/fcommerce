@@ -137,10 +137,7 @@ export default function CartPage() {
                 <span className="font-medium">Subtotal</span>
                 <span className="font-semibold">{formatPrice(totalPrice)}</span>
               </div>
-              <div className="flex justify-between items-center text-gray-700">
-                <span className="font-medium">Shipping</span>
-                <span className="font-semibold">Free</span>
-              </div>
+             
               <div className="flex justify-between items-center text-gray-700 font-bold text-lg pt-4 border-t border-gray-200">
                 <span>Total</span>
                 <span className='font-extrabold'>{formatPrice(totalPrice)}</span>

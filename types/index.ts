@@ -1,68 +1,63 @@
 export type Product = {
-  id: string
-  name: string
-  short_desc: string
-  long_desc: string
-  price: number
-  discount: number        
-  discount_status: boolean 
-  category: string
-  image: string
-  slug: string
-  sku: string
-}
+    id: string;
+    name: string;
+    short_desc: string;
+    long_desc: string;
+    price: number;
+    discount: number;
+    discount_status: boolean;
+    category: string;
+    image: string;
+    slug: string;
+    sku: string;
+};
 
-export type createProductType={
-  name: string
-  short_desc: string
-  long_desc?: string
-  price: number
-  discount: number        
-  discount_status: boolean 
-  category: string
-  image: string
-}
+export type createProductType = {
+    name: string;
+    short_desc: string;
+    long_desc?: string;
+    price: number;
+    discount: number;
+    discount_status: boolean;
+    category: string;
+    image: string;
+};
 
-
-type PaymentMethod = "bkash" | "cod" | 'mpay'
+type PaymentMethod = 'bkash' | 'cod' | 'mpay';
 
 export interface Order {
-  id?: string;
-  name: string;
-  phone: string;
-  address: string;
-  note?: string; // optional
-  total:number;
-  payment_method: PaymentMethod;
-  bkash_number?: string;
-  trx_id: string; // bkash হলে trx id, না হলে cod-generated id
-  product_ids: string[]; // array of product UUIDs
-  status?:boolean;
-  created_at?:Date
-
+    id?: string;
+    name: string;
+    phone: string;
+    address: string;
+    note?: string; // optional
+    total: number;
+    payment_method: PaymentMethod;
+    bkash_number?: string;
+    trx_id: string; // bkash হলে trx id, না হলে cod-generated id
+    product_ids: string[]; // array of product UUIDs
+    status?: boolean;
+    created_at?: Date;
 }
-
-
 
 export type adminFields = {
-  name:string;
-  email:string;
-  phone:string;
-  address:string;
-  role:"admin";
-  created_at:Date
-}
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    role: 'admin';
+    created_at: Date;
+};
 
 //admin
 export type ProfileFormValues = {
-  name: string;
-  address: string;
-  phone: string;
+    name: string;
+    address: string;
+    phone: string;
 };
 
 export type PasswordFormValues = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
 };
-

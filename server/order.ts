@@ -11,6 +11,38 @@ const getOrders = async () => {
   return data;
 };
 
+export const mazaPayInit = async ({ amount }: { amount: number }) => {
+  try {
+    const payCreate = await fetch(process.env.NEXT_PUBLIC_PAYMENT_API_URL+"/payment/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_PAYMENT_API_KEY as string,
+      },
+      body: JSON.stringify({ amount }),
+    });
+
+    if (!payCreate.ok) {
+      // যদি response status 200 না হয়
+      throw new Error(`Request failed with status ${payCreate.status}`);
+    }
+
+    const response = await payCreate.json();
+    
+    return {
+      status: 200,
+      data: response,
+    };
+  } catch (error: any) {
+    console.error("❌ Payment creation error:", error.message);
+    return {
+      status: 400,
+      message: error?.message || "Something went wrong",
+    };
+  }
+};
+
+
 const createOrder = async (item: Order) => {
   const { data, error } = await supabase.from('orders').insert(item).select();
   if (error) {
@@ -40,9 +72,6 @@ const confirmOrder = async (orderId: string) => {
     data
   }
 };
-
-
-
 
 
  const deleteOrderWithId = async (orderId: string) => {
