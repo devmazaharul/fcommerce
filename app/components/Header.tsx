@@ -1,5 +1,5 @@
 'use client';
-import { Concert_One } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import React from 'react';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
@@ -8,9 +8,9 @@ import { usePathname } from 'next/navigation';
 import { StoreConfigaration } from '@/constant';
 
 // Signature-style font
-const logoFont =   Concert_One({
-  weight: "400",
-  subsets: ["latin"],
+const logoFont =   Space_Grotesk({
+  weight: "700",
+  subsets: ["vietnamese"],
 });
 
 export default function Header() {
