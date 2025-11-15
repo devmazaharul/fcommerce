@@ -42,10 +42,6 @@ export const mazaPayInit = async ({ amount }: { amount: number }) => {
   }
 };
 
-
-
-
-
 const createOrder = async (item: Order) => {
   const { data, error } = await supabase.from('orders').insert(item).select();
   if (error) {
